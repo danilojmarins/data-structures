@@ -97,6 +97,62 @@ void Delete(struct Array *arr, int index)
     }
 }
 
+void Swap(struct Array *arr, int index1, int index2)
+{
+    if (index1 >= 0 && index1 < arr->length)
+    {
+        if (index2 >= 0 && index2 < arr->length)
+        {
+            int temp = arr->A[index1];
+            arr->A[index1] = arr->A[index2];
+            arr->A[index2] = temp;
+        }
+    }
+}
+
+int LinearSearch(struct Array *arr, int key)
+{
+    for (int i = 0; i < arr->length; i++)
+    {
+        if (arr->A[i] == key)
+        {
+            Swap(arr, i, 0); // improve performance for further searches
+            return 0;
+        }
+    }
+
+    return -1;
+}
+
+int BinarySearch(struct Array *arr, int key)
+{
+    int low = 0;
+    int high = arr->length - 1;
+    int mid = (high + low) / 2;
+
+    while (low <= high)
+    {
+        if (arr->A[mid] == key)
+        {
+            return mid;
+        }
+
+        else if (arr->A[mid] > key)
+        {
+            high = mid - 1;
+            mid = (high + low) / 2;
+        }
+
+        else if (arr->A[mid] < key)
+        {
+            low = mid + 1;
+            mid = (high + low) / 2;
+        }
+    }
+    
+    return -1;
+}
+
 int main()
 {
     struct Array arr;
@@ -112,13 +168,10 @@ int main()
         scanf("%d", &arr.A[i]);
     }
 
-    Append(&arr, 12);
-    Insert(&arr, 2, 5);
-    Delete(&arr, 5);
-    Display(arr);
-    Set(&arr, 2, 8);
+    //printf("\n%d \n", LinearSearch(&arr, 3));
+    printf("\n%d \n", BinarySearch(&arr, 3));
 
-    printf("\n%d \n", Get(&arr, 2));
+    Display(arr);
 
     return 0;
 }
